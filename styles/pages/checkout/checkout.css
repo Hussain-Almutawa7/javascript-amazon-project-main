@@ -230,5 +230,17 @@
   display: none;
 }
 
+.extra-style {
+  margin-top: 10px;
+  padding: 8px 15px;
+  font-size: 16px;
+}
+
+.disable-place-order {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 
 
