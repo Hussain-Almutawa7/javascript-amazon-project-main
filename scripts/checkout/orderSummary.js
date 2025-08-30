@@ -4,6 +4,7 @@ import {formatCurrency} from '../utils/money.js';
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 import {deliveryOptions} from "../../data/deliveryOptions.js";
 import { renderPaymentSummary } from './paymentSummary.js';
+import { renderCheckoutHeader } from './CheckoutHeader.js';
 
 export function renderOrderSummary() {
     let cartSummaryHTML = '';
@@ -108,13 +109,15 @@ export function renderOrderSummary() {
         const container = document.querySelector(`.js-cart-item-container-${productId}`);
         container.remove();
 
-        document.querySelector(".js-checkout-link").innerHTML = updateCartQuantityNumber() + " items";
+        //document.querySelector(".js-checkout-link").innerHTML = updateCartQuantityNumber() + " items";
+        renderCheckoutHeader();
         renderPaymentSummary()
         renderOrderSummary();
         });
     });
 
-    document.querySelector(".js-checkout-link").innerHTML = updateCartQuantityNumber();
+    //document.querySelector(".js-checkout-link").innerHTML = updateCartQuantityNumber();
+    renderCheckoutHeader();
 
     document.querySelectorAll(".js-link-primary").forEach(link => { // Update Link
         link.addEventListener("click", () => {
@@ -142,7 +145,8 @@ export function renderOrderSummary() {
         const newQuantity = Number(input.value);
         if (newQuantity === 0) {
             removeFromCart(productId);
-            checkoutLink.innerHTML = `${updateCartQuantityNumber()} items`; 
+            //checkoutLink.innerHTML = `${updateCartQuantityNumber()} items`; 
+            renderCheckoutHeader();
             container.remove();
         } else if (newQuantity < 1000) {
             updateQuantity(productId, newQuantity);
@@ -150,7 +154,8 @@ export function renderOrderSummary() {
             quantityLabel.textContent = newQuantity;
             input.value = newQuantity;
 
-            checkoutLink.innerHTML = `${updateCartQuantityNumber()} items`;      
+            //checkoutLink.innerHTML = `${updateCartQuantityNumber()} items`;
+            renderCheckoutHeader();      
         } else {
             alert("Invalid Input");
             return;
@@ -174,7 +179,8 @@ export function renderOrderSummary() {
     })
     });
 
-    document.querySelector(".js-checkout-link").innerHTML = `${updateCartQuantityNumber()} items`;
+    //document.querySelector(".js-checkout-link").innerHTML = `${updateCartQuantityNumber()} items`;
+    renderCheckoutHeader();
 
     document.querySelectorAll(".js-delivery-option").forEach(option => {
         option.addEventListener("click", () => {
