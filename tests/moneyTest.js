@@ -2,7 +2,6 @@ import formatCurrency from "../scripts/utils/money.js";
 
 console.log("Test suit: formatCurrencey");
 
-//Basic Test Case
 console.log("Converts cents into dollar");
 
 if (formatCurrency(2095) === "20.95") {
@@ -11,7 +10,7 @@ if (formatCurrency(2095) === "20.95") {
     console.log("failed");
 }
 
-//Edge Cases
+
 console.log("works with 0")
 
 if (formatCurrency(0) === "0.00") {
@@ -19,6 +18,7 @@ if (formatCurrency(0) === "0.00") {
 } else {
     console.log("failed");
 }
+
 
 console.log("round up to the nearest cents");
 
