@@ -2,12 +2,19 @@ import { renderCheckoutHeader } from "../../scripts/checkout/CheckoutHeader.js";
 import { loadFromStorage } from "../../data/cart.js";
 
 describe("test suite: renderCheckoutHeader", () => {
-  it("displays total cart items in the header", () => {
-    // Setup DOM the function expects
-    document.body.innerHTML = `
+  beforeEach(() => {
+    // Reset test container before each spec
+    document.querySelector(".js-test-container").innerHTML = `
       <div class="checkout-header-middle-section"></div>
     `;
+  });
 
+  afterEach(() => {
+    // Clean up after each spec
+    document.querySelector(".js-test-container").innerHTML = "";
+  });
+
+  it("displays total cart items in the header", () => {
     // Mock localStorage to simulate 3 items in cart
     spyOn(localStorage, "getItem").and.callFake((key) => {
       if (key === "cart") {
@@ -18,6 +25,7 @@ describe("test suite: renderCheckoutHeader", () => {
       }
       return null;
     });
+
     loadFromStorage();
 
     // Call the function under test
@@ -28,7 +36,7 @@ describe("test suite: renderCheckoutHeader", () => {
 
     // Assertions
     expect(header).not.toBeNull();
-    expect(header.textContent).toContain("3 items");    // 2 + 1 = 3
+    expect(header.textContent).toContain("3 items"); // 2 + 1 = 3
     expect(header.querySelector(".js-checkout-link").getAttribute("href"))
       .toBe("amazon.html");
   });
