@@ -14,6 +14,7 @@ describe("test suite: renderOrderSummary", () => {
             <div class="js-order-summary"></div>
             <div class="js-product-name"></div>
             <div class="js-product-price"></div>
+            <div class="js-payment-summary"></div>
         `;
 
     spyOn(localStorage, "getItem").and.callFake(() => {
@@ -60,12 +61,18 @@ describe("test suite: renderOrderSummary", () => {
     ).toContain("Intermediate Size Basketball");
 
     expect(
-      document.querySelector(`.js-product-price-${productId1}`).textContent.trim().charAt(0)
-    ).toBe("$")
+      document
+        .querySelector(`.js-product-price-${productId1}`)
+        .textContent.trim()
+        .charAt(0)
+    ).toBe("$");
 
     expect(
-      document.querySelector(`.js-product-price-${productId2}`).textContent.trim().charAt(0)
-    ).toBe("$")
+      document
+        .querySelector(`.js-product-price-${productId2}`)
+        .textContent.trim()
+        .charAt(0)
+    ).toBe("$");
   });
 
   it("removes a product", () => {
@@ -84,5 +91,25 @@ describe("test suite: renderOrderSummary", () => {
 
     expect(cart.length).toEqual(1);
     expect(cart[0].productId).toEqual(productId2);
+  });
+
+  it("update delivery option", () => {
+    const input = document.querySelector(
+      `.js-delivery-option-input-3-${productId1}`
+    );
+    input.click();
+
+    expect(input.checked).toBeTrue();
+    expect(cart.length).toEqual(2);
+    expect(cart[0].productId).toEqual(productId1);
+    expect(cart[0].deliveryOptionId).toEqual("3");
+
+    expect(document.querySelector(`.js-shipping-price`).textContent).toContain(
+      "$14.98"
+    );
+
+    expect(document.querySelector(`.js-total-price`).textContent).toContain(
+      "$63.50"
+    );
   });
 });
