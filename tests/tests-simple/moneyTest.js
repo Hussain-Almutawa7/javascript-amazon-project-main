@@ -1,4 +1,4 @@
-import formatCurrency from "../../scripts/utils/money.js";
+import {formatCurrency} from "../../scripts/utils/money.js";
 
 console.log("Test suit: formatCurrencey");
 
@@ -33,4 +33,3 @@ if (formatCurrency(2000.4) === "20.00") {
 } else {
     console.log("failed");
 }
-
