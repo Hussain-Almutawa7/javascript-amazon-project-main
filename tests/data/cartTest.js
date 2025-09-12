@@ -3,7 +3,7 @@ import {
   cart,
   loadFromStorage,
   removeFromCart,
-  updateDeliverOption
+  updateDeliverOption,
 } from "../../data/cart.js";
 import { renderOrderSummary } from "../../scripts/checkout/orderSummary.js";
 import { renderCheckoutHeader } from "../../scripts/checkout/CheckoutHeader.js";
@@ -183,6 +183,24 @@ describe("test suite: updateDeliveryOption", () => {
 
     expect(cart[0].productId).toEqual(productId1);
     expect(cart[0].deliveryOptionId).toEqual("1");
+
+    expect(localStorage.setItem).toHaveBeenCalledTimes(0);
+    expect(localStorage.setItem).not.toHaveBeenCalled();
+  });
+
+  it("use a deliveryOptionId that does not exist", () => {
+    spyOn(localStorage, "getItem").and.callFake(() => {
+      return JSON.stringify([
+        { productId: productId1, quantity: 1, deliveryOptionId: "2" },
+      ]);
+    });
+    loadFromStorage();
+    renderCheckoutHeader();
+    renderOrderSummary();
+
+    updateDeliverOption(productId1, "111");
+
+    expect(cart[0].deliveryOptionId).toEqual("2");
 
     expect(localStorage.setItem).toHaveBeenCalledTimes(0);
     expect(localStorage.setItem).not.toHaveBeenCalled();
