@@ -85,6 +85,9 @@ export function updateDeliverOption(productId, deliveryOptionId) {
   const matchingItem = cart.find(
     (cartItem) => productId === cartItem.productId
   );
+
+  if(!matchingItem) return;
+
   matchingItem.deliveryOptionId = deliveryOptionId;
   saveToStorage();
 }
