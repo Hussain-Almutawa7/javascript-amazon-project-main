@@ -1,10 +1,4 @@
-import {
-  addToCart,
-  cart,
-  loadFromStorage,
-  removeFromCart,
-  updateDeliverOption,
-} from "../../data/cart.js";
+import { cart } from "../../data/cart.js";
 import { renderOrderSummary } from "../../scripts/checkout/orderSummary.js";
 import { renderCheckoutHeader } from "../../scripts/checkout/CheckoutHeader.js";
 
@@ -14,22 +8,22 @@ describe("test suite: addToCart", () => {
   });
 
   it("adds an existing product to the cart", () => {
-    spyOn(localStorage, "getItem").and.callFake(() => {
-      return JSON.stringify([
-        {
-          productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-          quantity: 1,
-          deliveryOptionId: "1",
-        },
-      ]);
-    });
-    loadFromStorage();
+    cart.cartItems = [
+      {
+        productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+        quantity: 1,
+        deliveryOptionId: "1",
+      },
+    ];
 
-    addToCart("e43638ce-6aa0-4b85-b27f-e1d07eb678c6");
-    expect(cart.length).toEqual(1);
+    cart.addToCart("e43638ce-6aa0-4b85-b27f-e1d07eb678c6");
+
+    expect(cart.cartItems.length).toEqual(1);
     expect(localStorage.setItem).toHaveBeenCalledTimes(1);
-    expect(cart[0].productId).toEqual("e43638ce-6aa0-4b85-b27f-e1d07eb678c6");
-    expect(cart[0].quantity).toEqual(2);
+    expect(cart.cartItems[0].productId).toEqual(
+      "e43638ce-6aa0-4b85-b27f-e1d07eb678c6"
+    );
+    expect(cart.cartItems[0].quantity).toEqual(2);
     expect(localStorage.setItem).toHaveBeenCalledWith(
       "cart",
       JSON.stringify([
@@ -43,16 +37,16 @@ describe("test suite: addToCart", () => {
   });
 
   it("adds new product to the cart", () => {
-    spyOn(localStorage, "getItem").and.callFake(() => {
-      return JSON.stringify([]);
-    });
-    loadFromStorage();
+    cart.cartItems = [];
 
-    addToCart("e43638ce-6aa0-4b85-b27f-e1d07eb678c6");
-    expect(cart.length).toEqual(1);
+    cart.addToCart("e43638ce-6aa0-4b85-b27f-e1d07eb678c6");
+
+    expect(cart.cartItems.length).toEqual(1);
     expect(localStorage.setItem).toHaveBeenCalledTimes(1);
-    expect(cart[0].productId).toEqual("e43638ce-6aa0-4b85-b27f-e1d07eb678c6");
-    expect(cart[0].quantity).toEqual(1);
+    expect(cart.cartItems[0].productId).toEqual(
+      "e43638ce-6aa0-4b85-b27f-e1d07eb678c6"
+    );
+    expect(cart.cartItems[0].quantity).toEqual(1);
     expect(localStorage.setItem).toHaveBeenCalledWith(
       "cart",
       JSON.stringify([
@@ -75,19 +69,16 @@ describe("test suite: removeFromCart", () => {
   });
 
   it("remove a productId that is in cart", () => {
-    spyOn(localStorage, "getItem").and.callFake(() => {
-      return JSON.stringify([
-        { productId: productId1, quantity: 2, deliveryOptionId: "1" },
-        { productId: productId2, quantity: 1, deliveryOptionId: "2" },
-      ]);
-    });
-    loadFromStorage();
+    cart.cartItems = [
+      { productId: productId1, quantity: 2, deliveryOptionId: "1" },
+      { productId: productId2, quantity: 1, deliveryOptionId: "2" },
+    ];
 
-    removeFromCart(productId1);
+    cart.removeFromCart(productId1);
 
-    expect(cart.length).toBe(1);
-    expect(cart[0].productId).toEqual(productId2);
-    expect(cart[0].quantity).toEqual(1);
+    expect(cart.cartItems.length).toBe(1);
+    expect(cart.cartItems[0].productId).toEqual(productId2);
+    expect(cart.cartItems[0].quantity).toEqual(1);
 
     expect(localStorage.setItem).toHaveBeenCalledTimes(1);
     expect(localStorage.setItem).toHaveBeenCalledWith(
@@ -99,19 +90,15 @@ describe("test suite: removeFromCart", () => {
   });
 
   it("remove a productId that is not in the cart", () => {
-    spyOn(localStorage, "getItem").and.callFake(() => {
-      return JSON.stringify([
-        { productId: productId1, quantity: 2, deliveryOptionId: "1" },
-      ]);
-    });
-    loadFromStorage();
+    cart.cartItems = [
+      { productId: productId1, quantity: 2, deliveryOptionId: "1" },
+    ];
 
-    removeFromCart(productId2);
+    cart.removeFromCart(productId2);
 
-    expect(cart.length).toEqual(1);
-    expect(cart[0].productId).toEqual(productId1);
-    expect(cart[0].quantity).toEqual(2);
-
+    expect(cart.cartItems.length).toEqual(1);
+    expect(cart.cartItems[0].productId).toEqual(productId1);
+    expect(cart.cartItems[0].quantity).toEqual(2);
     expect(localStorage.setItem).toHaveBeenCalledTimes(1);
     expect(localStorage.setItem).toHaveBeenCalledWith(
       "cart",
@@ -141,12 +128,9 @@ describe("test suite: updateDeliveryOption", () => {
   });
 
   it("update delivery option for a product in the cart", () => {
-    spyOn(localStorage, "getItem").and.callFake(() => {
-      return JSON.stringify([
-        { productId: productId1, quantity: 1, deliveryOptionId: "1" },
-      ]);
-    });
-    loadFromStorage();
+    cart.cartItems = [
+      { productId: productId1, quantity: 1, deliveryOptionId: "1" },
+    ];
     renderCheckoutHeader();
     renderOrderSummary();
 
@@ -156,9 +140,9 @@ describe("test suite: updateDeliveryOption", () => {
     input.click();
 
     expect(input.checked).toBeTrue();
-    expect(cart.length).toEqual(1);
-    expect(cart[0].productId).toEqual(productId1);
-    expect(cart[0].deliveryOptionId).toEqual("3");
+    expect(cart.cartItems.length).toEqual(1);
+    expect(cart.cartItems[0].productId).toEqual(productId1);
+    expect(cart.cartItems[0].deliveryOptionId).toEqual("3");
 
     expect(localStorage.setItem).toHaveBeenCalledTimes(1);
     expect(localStorage.setItem).toHaveBeenCalledWith(
@@ -170,39 +154,33 @@ describe("test suite: updateDeliveryOption", () => {
   });
 
   it("update delivery option of a product ID that is not in the cart", () => {
-    spyOn(localStorage, "getItem").and.callFake(() => {
-      return JSON.stringify([
-        { productId: productId1, quantity: 1, deliveryOptionId: "1" },
-      ]);
-    });
-    loadFromStorage();
+    cart.cartItems = [
+      { productId: productId1, quantity: 1, deliveryOptionId: "1" },
+    ];
     renderCheckoutHeader();
     renderOrderSummary();
 
-    updateDeliverOption(productId2, "2");
+    cart.updateDeliverOption(productId2, "2");
 
-    expect(cart[0].productId).toEqual(productId1);
-    expect(cart[0].deliveryOptionId).toEqual("1");
+    expect(cart.cartItems[0].productId).toEqual(productId1);
+    expect(cart.cartItems[0].deliveryOptionId).toEqual("1");
 
     expect(localStorage.setItem).toHaveBeenCalledTimes(0);
     expect(localStorage.setItem).not.toHaveBeenCalled();
   });
 
   it("use a deliveryOptionId that does not exist", () => {
-    spyOn(localStorage, "getItem").and.callFake(() => {
-      return JSON.stringify([
-        { productId: productId1, quantity: 1, deliveryOptionId: "2" },
-      ]);
-    });
-    loadFromStorage();
+    cart.cartItems = [
+      { productId: productId1, quantity: 1, deliveryOptionId: "2" },
+    ];
     renderCheckoutHeader();
     renderOrderSummary();
 
-    updateDeliverOption(productId1, "111");
+    cart.updateDeliverOption(productId1, "111");
 
-    expect(cart[0].deliveryOptionId).toEqual("2");
-
+    expect(cart.cartItems[0].deliveryOptionId).toEqual("2");
     expect(localStorage.setItem).toHaveBeenCalledTimes(0);
     expect(localStorage.setItem).not.toHaveBeenCalled();
   });
 });
+
