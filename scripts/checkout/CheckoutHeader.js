@@ -1,13 +1,12 @@
-import { updateCartQuantityNumber } from "../../data/cart.js";
+import { cart } from "../../data/cart.js";
 
 export function renderCheckoutHeader() {
-    let html = "";
+  let html = "";
 
-    html += `
+  html += `
         Checkout (<a class="return-to-home-link js-checkout-link"
-            href="amazon.html">${updateCartQuantityNumber()} items</a>)
-    `
+            href="amazon.html">${cart.updateCartQuantityNumber()} items</a>)
+    `;
 
-    document.querySelector(".checkout-header-middle-section").innerHTML = html;
+  document.querySelector(".checkout-header-middle-section").innerHTML = html;
 }
-

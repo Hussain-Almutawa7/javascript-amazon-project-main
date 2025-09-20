@@ -1,4 +1,4 @@
-import { cart, updateCartQuantityNumber } from "../../data/cart.js";
+import { cart } from "../../data/cart.js";
 import { deliveryOptions } from "../../data/deliveryOptions.js";
 import { getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
@@ -12,7 +12,7 @@ export function renderPaymentSummary() {
   let EstimatedTax = 0;
   let totalPriceAfterTax = 0;
 
-  cart.forEach((cartItem) => {
+  cart.cartItems.forEach((cartItem) => {
     const product = getProduct(cartItem.productId);
     totalPriceCents += product.priceCents * cartItem.quantity;
 
@@ -37,7 +37,7 @@ export function renderPaymentSummary() {
             </div>
 
             <div class="payment-summary-row">
-                <div>Items (${updateCartQuantityNumber()}):</div>
+                <div>Items (${cart.updateCartQuantityNumber()}):</div>
                 <div class="payment-summary-money">$${formatCurrency(
                   totalPrice
                 )}</div>
@@ -82,14 +82,14 @@ export function renderPaymentSummary() {
   container.innerHTML = html;
 
   const btn = document.querySelector(".js-place-order-button");
-  const empty = updateCartQuantityNumber() === 0;
+  const empty = cart.updateCartQuantityNumber() === 0;
   btn.disabled = empty;
   btn.classList.toggle("disable-place-order", empty);
 
   document
     .querySelector(".js-place-order-button")
     .addEventListener("click", () => {
-      if (updateCartQuantityNumber() === 0) return;
+      if (cart.updateCartQuantityNumber() === 0) return;
       window.location.href = "orders.html";
     });
 }

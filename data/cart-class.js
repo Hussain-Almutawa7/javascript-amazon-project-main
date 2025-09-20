@@ -1,6 +1,6 @@
 import { deliveryOptions } from "./deliveryOptions.js";
 
-class Cart {
+export class Cart {
   cartItems;
   #localStorageKey;
 
@@ -106,9 +106,10 @@ class Cart {
   }
 }
 
+/*
 const cart = new Cart("cart-oop");
 const businessCart = new Cart("cart-business");
 
 console.log(cart);
 console.log(businessCart);
-console.log(businessCart instanceof Cart);
+console.log(businessCart instanceof Cart); */
