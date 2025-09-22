@@ -7,9 +7,21 @@ import { loadProducts } from "../data/products.js";
 //import "../data/backend-practice.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  new Promise((resolve) => {
+    loadProducts(() => {
+      resolve();
+    });
+  }).then(() => {
+    renderCheckoutHeader();
+    renderOrderSummary();
+    renderPaymentSummary();
+  });
+
+  /*
   loadProducts(() => {
     renderCheckoutHeader();
     renderOrderSummary();
     renderPaymentSummary();
   });
+  */
 });

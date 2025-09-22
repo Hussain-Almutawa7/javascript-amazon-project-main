@@ -1,17 +1,5 @@
 import { formatCurrency } from "../scripts/utils/money.js";
 
-export function getProduct(productId) {
-  let matchingProduct;
-
-  products.forEach((product) => {
-    if (product.id === productId) {
-      matchingProduct = product;
-    }
-  });
-
-  return matchingProduct;
-}
-
 export class Product {
   id;
   image;
@@ -37,6 +25,18 @@ export class Product {
 
   extraInfoHTML() {
     return ``;
+  }
+
+  getProduct(productId) {
+    let matchingProduct;
+
+    products.forEach((product) => {
+      if (product.id === productId) {
+        matchingProduct = product;
+      }
+    });
+
+    return matchingProduct;
   }
 }
 
@@ -97,6 +97,18 @@ export function loadProducts(func) {
 
   xhr.open("GET", "https://supersimplebackend.dev/products");
   xhr.send();
+}
+
+export function getProduct(productId) {
+  let matchingProduct;
+
+  products.forEach((product) => {
+    if (product.id === productId) {
+      matchingProduct = product;
+    }
+  });
+
+  return matchingProduct;
 }
 
 /*

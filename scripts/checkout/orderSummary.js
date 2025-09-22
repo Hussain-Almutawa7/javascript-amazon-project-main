@@ -1,5 +1,10 @@
 import { cart } from "../../data/cart.js";
-import { products, getProduct } from "../../data/products.js";
+import {
+  products,
+  getProduct,
+  loadProducts,
+  Product,
+} from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 import {
@@ -16,6 +21,8 @@ export function renderOrderSummary() {
     const productId = cartItem.productId;
 
     const matchingProduct = getProduct(productId);
+
+    if (!matchingProduct) { console.warn('Missing product', item.productId); return; }
 
     const deliveryOptionId = cartItem.deliveryOptionId;
 

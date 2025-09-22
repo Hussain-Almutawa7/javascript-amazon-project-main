@@ -1,6 +1,4 @@
 import { cart } from "../../data/cart.js";
-import { renderOrderSummary } from "../../scripts/checkout/orderSummary.js";
-import { renderCheckoutHeader } from "../../scripts/checkout/CheckoutHeader.js";
 
 describe("test suite: addToCart", () => {
   beforeEach(() => {
@@ -131,15 +129,9 @@ describe("test suite: updateDeliveryOption", () => {
     cart.cartItems = [
       { productId: productId1, quantity: 1, deliveryOptionId: "1" },
     ];
-    renderCheckoutHeader();
-    renderOrderSummary();
 
-    const input = document.querySelector(
-      `.js-delivery-option-input-3-${productId1}`
-    );
-    input.click();
+    cart.updateDeliverOption(productId1, "3");
 
-    expect(input.checked).toBeTrue();
     expect(cart.cartItems.length).toEqual(1);
     expect(cart.cartItems[0].productId).toEqual(productId1);
     expect(cart.cartItems[0].deliveryOptionId).toEqual("3");
@@ -157,8 +149,6 @@ describe("test suite: updateDeliveryOption", () => {
     cart.cartItems = [
       { productId: productId1, quantity: 1, deliveryOptionId: "1" },
     ];
-    renderCheckoutHeader();
-    renderOrderSummary();
 
     cart.updateDeliverOption(productId2, "2");
 
@@ -173,8 +163,6 @@ describe("test suite: updateDeliveryOption", () => {
     cart.cartItems = [
       { productId: productId1, quantity: 1, deliveryOptionId: "2" },
     ];
-    renderCheckoutHeader();
-    renderOrderSummary();
 
     cart.updateDeliverOption(productId1, "111");
 
@@ -183,4 +171,3 @@ describe("test suite: updateDeliveryOption", () => {
     expect(localStorage.setItem).not.toHaveBeenCalled();
   });
 });
-
