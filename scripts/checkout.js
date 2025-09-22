@@ -15,6 +15,22 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   */
 
+  async function loadPage() {
+
+    await loadProductsFetch();
+
+    renderCheckoutHeader();
+    renderOrderSummary();
+    renderPaymentSummary();
+  }
+
+  loadPage();
+
+  /*
+  loadPage().then(() => {
+    console.log("Next Step");
+  });
+
   Promise.all([
     loadProductsFetch().then(() => {
       renderCheckoutHeader();
@@ -22,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderPaymentSummary();
     }),
   ]);
+  */
 
   /*
   loadProducts(() => {
