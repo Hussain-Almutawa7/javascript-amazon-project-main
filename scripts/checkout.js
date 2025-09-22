@@ -16,8 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
   */
 
   async function loadPage() {
-
-    await loadProductsFetch();
+    try {
+      await loadProductsFetch();
+    } catch (error) {
+      console.log("Unexpected Error. Please try again later.");
+    }
 
     renderCheckoutHeader();
     renderOrderSummary();
