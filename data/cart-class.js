@@ -1,3 +1,4 @@
+import { renderOrderSummary } from "../scripts/checkout/orderSummary.js";
 import { deliveryOptions } from "./deliveryOptions.js";
 
 export class Cart {
@@ -102,6 +103,11 @@ export class Cart {
     if (!matchingDeliveryOptionId) return;
 
     matchingItem.deliveryOptionId = deliveryOptionId;
+    this.saveToStorage();
+  }
+
+  clear() {
+    this.cartItems =[];
     this.saveToStorage();
   }
 }

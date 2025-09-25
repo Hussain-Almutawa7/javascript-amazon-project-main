@@ -1,12 +1,18 @@
 import { cart } from "../../data/cart.js";
 
 export function renderCheckoutHeader() {
-  let html = "";
+  const count = cart.updateCartQuantityNumber();
 
-  html += `
-        Checkout (<a class="return-to-home-link js-checkout-link"
-            href="amazon.html">${cart.updateCartQuantityNumber()} items</a>)
+  const checkoutEl = document.querySelector(".checkout-header-middle-section");
+  if (checkoutEl) {
+    checkoutEl.innerHTML = `
+      Checkout (<a class="return-to-home-link js-checkout-link"
+          href="amazon.html">${count} items</a>)
     `;
+  }
 
-  document.querySelector(".checkout-header-middle-section").innerHTML = html;
+  const cartQtyEl = document.querySelector(".js-cart-quantity");
+  if (cartQtyEl) {
+    cartQtyEl.innerHTML = count;
+  }
 }
