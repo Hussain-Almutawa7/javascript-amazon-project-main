@@ -3,12 +3,14 @@ import { getProduct } from "../data/products.js";
 import { loadProductsFetch } from "../data/products.js";
 import { renderCheckoutHeader } from "./checkout/CheckoutHeader.js";
 import { loadCartFetch } from "../data/cart.js";
+import { setUpSearchBar } from "./amazonHeader.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   await Promise.all([loadProductsFetch(), loadCartFetch()]);
   renderTrackingOrder();
   renderCheckoutHeader();
+  setUpSearchBar();
 });
 
 function renderTrackingOrder() {

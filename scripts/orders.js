@@ -2,12 +2,14 @@ import { orders } from "../data/orders.js";
 import { getProduct, loadProductsFetch } from "../data/products.js";
 import { renderCheckoutHeader } from "./checkout/CheckoutHeader.js";
 import { formatCurrency } from "./utils/money.js";
+import { setUpSearchBar } from "./amazonHeader.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   await loadProductsFetch();
   renderMyOrders();
   renderCheckoutHeader();
+  setUpSearchBar();
 });
 
 function renderMyOrders() {
