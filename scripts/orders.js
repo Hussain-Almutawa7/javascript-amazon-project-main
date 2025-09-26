@@ -3,6 +3,7 @@ import { getProduct, loadProductsFetch } from "../data/products.js";
 import { renderCheckoutHeader } from "./checkout/CheckoutHeader.js";
 import { formatCurrency } from "./utils/money.js";
 import { setUpSearchBar } from "./amazonHeader.js";
+import { cart } from "../data/cart.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -10,6 +11,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderMyOrders();
   renderCheckoutHeader();
   setUpSearchBar();
+
+  document.querySelectorAll(".js-buy-again-button").forEach((link) => {
+    link.addEventListener("click", () => {
+      const { productId } = link.dataset;
+      if (!productId) return;
+      cart.addToCart(productId);
+      renderCheckoutHeader();
+    });
+  });
 });
 
 function renderMyOrders() {
@@ -86,12 +96,3 @@ function renderMyOrders() {
 
   document.querySelector(".js-order-container").innerHTML = myOrderHtml;
 }
-
-document.querySelectorAll(".js-buy-again-button").forEach((link) => {
-  link.addEventListener("click", () => {
-    const { productId } = link.dataset;
-    if (!productId) return;
-    cart.addToCart(productId);
-    renderCheckoutHeader();
-  });
-});
