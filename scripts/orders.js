@@ -1,5 +1,4 @@
 import { orders } from "../data/orders.js";
-import { cart } from "../data/cart.js";
 import { getProduct, loadProductsFetch } from "../data/products.js";
 import { renderCheckoutHeader } from "./checkout/CheckoutHeader.js";
 import { formatCurrency } from "./utils/money.js";
@@ -9,37 +8,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   await loadProductsFetch();
   renderMyOrders();
   renderCheckoutHeader();
-  //console.log(orders);
+});
 
-  function renderMyOrders() {
-    if (!orders.length) {
-      document.querySelector(".js-order-container").innerHTML =
-        "<p>You have no orders yet.</p>";
-      return;
-    }
+function renderMyOrders() {
+  if (!orders.length) {
+    document.querySelector(".js-order-container").innerHTML =
+      "<p>You have no orders yet.</p>";
+    return;
+  }
 
-    let myOrderHtml = ``;
+  let myOrderHtml = ``;
 
-    orders.forEach((order) => {
-      const matchingProduct = getProduct(order.id);
-      /**
-       {
-        id: "c4f53aba-bf3e-41a5-bc2d-488d31ae176d",
-        orderTime: "2025-09-24T19:55:04.549Z",
-        totalCostCents: 1199,
-        products: [
-        {
-          productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-          quantity: 1,
-          estimatedDeliveryTime: "2025-10-01T19:55:04.549Z",
-          variation: null
-        }
-      ]
-    }
-       */
-      const date = dayjs(order.orderTime).format("MMMM D");
+  orders.forEach((order) => {
+    const date = dayjs(order.orderTime).format("MMMM D");
 
-      myOrderHtml += `
+    myOrderHtml += `
         <div class="order-header">
             <div class="order-header-left-section">
                 <div class="order-date">
@@ -59,15 +42,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>
             `;
 
-      order.products.forEach((item) => {
-        const product = getProduct(item.productId);
-        if (!product) return;
+    order.products.forEach((item) => {
+      const product = getProduct(item.productId);
+      if (!product) return;
 
-        let dateString = item.estimatedDeliveryTime
-          ? dayjs(item.estimatedDeliveryTime).format("MMM D")
-          : "";
+      let dateString = item.estimatedDeliveryTime
+        ? dayjs(item.estimatedDeliveryTime).format("MMM D")
+        : "";
 
-        myOrderHtml += `
+      myOrderHtml += `
            <div class="order-details-grid">
             <div class="product-image-container">
               <img src="${product.image}">
@@ -87,7 +70,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>
 
             <div class="product-actions">
-              <a href="tracking.html">
+              <a href="tracking.html?orderId=${order.id}&productId=${product.id}">
                 <button class="track-package-button button-secondary js-track-package-button">
                   Track package
                 </button>
@@ -96,24 +79,17 @@ document.addEventListener("DOMContentLoaded", async () => {
           </div>
           <br>
         `;
-      });
-    });
-
-    document.querySelector(".js-order-container").innerHTML = myOrderHtml;
-  }
-
-  document.querySelectorAll(".js-buy-again-button").forEach((link) => {
-    link.addEventListener("click", () => {
-      const { productId } = link.dataset;
-      if (!productId) return;
-      cart.addToCart(productId);
-      renderCheckoutHeader();
     });
   });
 
-  document.querySelectorAll(".js-track-package-button").forEach(button => {
-    button.addEventListener("click", () => {
-      
-    })
-  })
+  document.querySelector(".js-order-container").innerHTML = myOrderHtml;
+}
+
+document.querySelectorAll(".js-buy-again-button").forEach((link) => {
+  link.addEventListener("click", () => {
+    const { productId } = link.dataset;
+    if (!productId) return;
+    cart.addToCart(productId);
+    renderCheckoutHeader();
+  });
 });
